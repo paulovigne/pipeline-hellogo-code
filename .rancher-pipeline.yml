@@ -1,0 +1,17 @@
+stages:
+- name: build
+  steps:
+  - publishImageConfig:
+      dockerfilePath: ./Dockerfile
+      buildContext: .
+      tag: harbor-diat.prevnet/library/hellogo:${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: harbor-diat.prevnet
+- name: deploy
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
+timeout: 60
+branch:
+  include:
+  - master
