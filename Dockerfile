@@ -1,5 +1,5 @@
 # Start from the latest golang base image
-FROM harbor-registry.harbor/base-images/golang:latest as builder
+FROM harbor-core.harbor/base-images/golang:latest as builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 
 ######## Start a new stage from scratch #######
-FROM harbor-registry.harbor/base-images/alpine:latest  
+FROM harbor-registry.core/base-images/alpine:latest  
 
 RUN apk --no-cache add ca-certificates
 
