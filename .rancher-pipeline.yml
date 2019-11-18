@@ -7,6 +7,9 @@ stages:
       tag: harbor-diat.prevnet/library/hellogo:${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
       registry: harbor-diat.prevnet
+    env:
+      PLUGIN_DEBUG: "true"
+      PLUGIN_INSECURE: "true"
 - name: deploy
   steps:
   - applyYamlConfig:
