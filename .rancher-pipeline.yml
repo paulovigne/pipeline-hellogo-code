@@ -4,9 +4,9 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: harbor-diat.prevnet/library/hellogo:${CICD_EXECUTION_SEQUENCE}
+      tag: harbor-local.harbor/library/hellogo:${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
-      registry: harbor-diat.prevnet
+      registry: harbor-local.harbor
     env:
       PLUGIN_DEBUG: "true"
       PLUGIN_INSECURE: "true"
