@@ -3,7 +3,6 @@ FROM harbor.harbor/base-images/node:8.16.1-alpine
 ## it sets directory in the container to /app to store files and launch our app.
 WORKDIR /app
 ## it copies the app to /app directory with dependencies.
-RUN npm init
 COPY package.json /app
 RUN npm install
 COPY . /app
