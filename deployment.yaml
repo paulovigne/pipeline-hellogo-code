@@ -88,7 +88,7 @@ spec:
         tty: true
       dnsPolicy: ClusterFirst
       imagePullSecrets:
-      - name: harbor-registry
+      - name: harbor
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
