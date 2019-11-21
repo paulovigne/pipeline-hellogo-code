@@ -1,4 +1,4 @@
-FROM harbor.harbor/library/nginx-116:1.14.2-alpine
+FROM harbor.harbor/library/nginx-116:latest
 
 ###
 ### Variables
