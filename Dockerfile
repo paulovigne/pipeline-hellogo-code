@@ -1,5 +1,8 @@
 ## it uses node js image alpine version from image registries.
 FROM harbor.harbor/base-images/node:8.16.1-alpine
+
+RUN apk add --no-cache bash
+
 ## it sets directory in the container to /app to store files and launch our app.
 WORKDIR /app
 ## it copies the app to /app directory with dependencies.
