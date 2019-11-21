@@ -15,7 +15,7 @@ spec:
       paths:
       - backend:
           serviceName: hellogo-http
-          servicePort: tcp-8080
+          servicePort: tcp-80
         path: /
 ---
 apiVersion: v1
@@ -25,9 +25,9 @@ metadata:
   namespace: hellogo
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    name: tcp-8080
+    name: tcp-80
   selector:
     app: account-service
   type: ClusterIP
@@ -56,7 +56,7 @@ spec:
         version: "1.0"
     spec:
       containers:
-        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+      - image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -64,7 +64,7 @@ spec:
           periodSeconds: 2
           successThreshold: 1
           tcpSocket:
-            port: 8080
+            port: 80
           timeoutSeconds: 2
         name: hellogo
         readinessProbe:
@@ -73,7 +73,7 @@ spec:
           periodSeconds: 2
           successThreshold: 2
           tcpSocket:
-            port: 8080
+            port: 80
           timeoutSeconds: 2
         resources: {}
         securityContext:
