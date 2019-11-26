@@ -1,4 +1,4 @@
-FROM harbor-registry:5000/library/nginx:latest
+FROM harbor-registry.harbor:5000/library/nginx:latest
 
 ###
 ### Variables
