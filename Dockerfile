@@ -1,4 +1,4 @@
-FROM harbor.local/library/nginx:latest
+FROM nginx:latest
 
 ###
 ### Variables
