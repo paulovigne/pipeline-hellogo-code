@@ -4,9 +4,9 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: hellogo:${CICD_EXECUTION_SEQUENCE}
-      #pushRemote: true
-      #registry: 	harbor-registry:5000
+      tag: n231d018803.fast.prevnet/library/hellogo:${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: n231d018803.fast.prevnet
     env:
       PLUGIN_DEBUG: "true"
       PLUGIN_INSECURE: "true"
