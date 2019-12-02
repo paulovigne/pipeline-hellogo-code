@@ -29,7 +29,7 @@ spec:
     protocol: TCP
     name: tcp-80
   selector:
-    app: account-service
+    app: hellogo
   type: ClusterIP
 ---
 apiVersion: apps/v1
