@@ -1,4 +1,4 @@
-FROM n231d018803.fast.prevnet/nginx:latest
+FROM n231d018803.fast.prevnet/library/nginx:latest
 
 ###
 ### Variables
