@@ -10,12 +10,12 @@ metadata:
   namespace: hellogo
 spec:
   rules:
-  - host: hellogo-diat.prevnet
+  - host: hellogo.np-ctn.prevnet
     http:
       paths:
       - backend:
           serviceName: hellogo-http
-          servicePort: tcp-80
+          servicePort: tcp-8080
         path: /
 ---
 apiVersion: v1
@@ -25,9 +25,9 @@ metadata:
   namespace: hellogo
 spec:
   ports:
-  - port: 80
+  - port: 8080
     protocol: TCP
-    name: tcp-80
+    name: tcp-8080
   selector:
     app: hellogo
   type: ClusterIP
@@ -88,7 +88,7 @@ spec:
         tty: true
       dnsPolicy: ClusterFirst
       imagePullSecrets:
-      - name: harbor
+      - name: harbor-registry
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
