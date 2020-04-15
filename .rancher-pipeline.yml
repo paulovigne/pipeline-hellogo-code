@@ -4,11 +4,11 @@ stages:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: n231d018803.fast.prevnet/library/hellogo:${CICD_EXECUTION_SEQUENCE}
+      tag: harbor.ctn.prevnet/paulovigne/hellogo:${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
-      registry: n231d018803.fast.prevnet
+      registry: harbor.ctn.prevnet
     env:
-      PLUGIN_DEBUG: "true"
+      #PLUGIN_DEBUG: "true"
       PLUGIN_INSECURE: "true"
 - name: deploy
   steps:
