@@ -1,6 +1,9 @@
 stages:
 - name: build
   steps:
+  - runScriptConfig:
+      image: golang
+      shellScript: go build -o app
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
