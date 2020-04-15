@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM harbor.ctn.prevnet/library/golang:alpine
 
 ### Vars
 ENV APPUSER appuser
