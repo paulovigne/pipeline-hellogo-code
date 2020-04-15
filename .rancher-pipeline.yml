@@ -3,7 +3,7 @@ stages:
   steps:
   - runScriptConfig:
       image: harbor.ctn.prevnet/library/golang:latest
-      shellScript: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -installsuffix cgo -ldflags '-extldflags "-static"' -o app .
+      shellScript: CGO_ENABLED=0; GOOS=linux; GOARCH=amd64; go build -installsuffix cgo -ldflags '-extldflags "-static"' -o app
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
