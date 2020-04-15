@@ -3,7 +3,7 @@ stages:
   steps:
   - runScriptConfig:
       image: harbor.ctn.prevnet/library/golang:latest
-      shellScript: go build -o app
+      shellScript: CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
