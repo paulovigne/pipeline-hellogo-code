@@ -2,7 +2,7 @@ stages:
 - name: build
   steps:
   - runScriptConfig:
-      image: golang
+      image: harbor.ctn.prevnet/library/golang:latest
       shellScript: go build -o app
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
