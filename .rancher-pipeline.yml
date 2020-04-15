@@ -11,7 +11,6 @@ stages:
       pushRemote: true
       registry: harbor.ctn.prevnet
     env:
-      #PLUGIN_DEBUG: "true"
       PLUGIN_INSECURE: "true"
 - name: deploy
   steps:
