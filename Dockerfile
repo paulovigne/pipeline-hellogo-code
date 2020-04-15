@@ -1,4 +1,4 @@
-FROM alpine
+FROM golang:alpine
 
 ### Vars
 ENV APPUSER appuser
