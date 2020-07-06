@@ -5,7 +5,7 @@ metadata:
   namespace: hellogo
 spec:
   rules:
-  - host: hellogo.ctn.prevnet
+  - host: hellogo.np-ctn.prevnet
     http:
       paths:
       - backend:
