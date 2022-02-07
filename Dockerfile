@@ -1,4 +1,4 @@
-FROM harbor.ctn.prevnet/library/golang:latest
+FROM golang:latest
 EXPOSE 8080
 COPY ./hello-app /usr/local/bin/
 USER 1001
