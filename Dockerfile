@@ -3,8 +3,7 @@ FROM quay.io/bitnami/golang as builder-goapp
 RUN mkdir /build
 ADD ./server.go /build/
 WORKDIR /build
-RUN go mod init
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o server .
+RUN CGO_ENABLED=0 GOOS=linux go build server.go
 
 # generate clean, final image for end users
 FROM registry.access.redhat.com/ubi8-minimal:8.5-230
