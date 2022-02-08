@@ -3,24 +3,21 @@ FROM quay.io/bitnami/golang as builder-goapp
 RUN mkdir /build
 ADD ./server.go /build/
 WORKDIR /build
-RUN CGO_ENABLED=0 GOOS=linux go build server.go
+RUN GOPATH=/build CGO_ENABLED=0 GOOS=linux go build server.go
 
 # generate clean, final image for end users
 FROM registry.access.redhat.com/ubi8-minimal:8.5-230
 
 ### Node Vars
 ENV APPUSER appuser
+ENV UIDGID 1001
 ENV APP_BASEDIR /app
 ENV APP_PORT 8080
 
-# Creating node user, install basic packages
-
-RUN if [ `getent passwd | grep ${APPUSER} | wc -l` -eq 0 ] \
-    ; then \
-             addgroup -g 1001 ${APPUSER} \
-             && adduser -u 1001 -G ${APPUSER} -s /bin/sh -D ${APPUSER} \
-    ; fi \
-    && apk -U upgrade
+# Add User
+RUN microdnf install -y shadow-utils \
+ && groupadd -g ${UIDGID} ${APPUSER} \
+ && adduser ${APPUSER} -u ${UIDGID} -g ${UIDGID}
 
 # Install App
 RUN mkdir ${APP_BASEDIR}
