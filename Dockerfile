@@ -1,5 +1,40 @@
-FROM golang:latest
-EXPOSE 8080
-COPY ./hello-app /usr/local/bin/
-USER 1001
-CMD ["hello-app"]
+# builder image
+FROM quay.io/bitnami/golang as builder-goapp
+RUN mkdir /build
+ADD ./server.go /build/
+WORKDIR /build
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o goapp .
+
+# generate clean, final image for end users
+FROM alpine:3.14
+
+### Node Vars
+ENV APPUSER appuser
+ENV APP_BASEDIR /app
+ENV APP_PORT 8080
+
+# Creating node user, install basic packages
+
+RUN if [ `getent passwd | grep ${APPUSER} | wc -l` -eq 0 ] \
+    ; then \
+             addgroup -g 1001 ${APPUSER} \
+             && adduser -u 1001 -G ${APPUSER} -s /bin/sh -D ${APPUSER} \
+    ; fi \
+    && apk -U upgrade
+
+# Install App
+RUN mkdir ${APP_BASEDIR}
+WORKDIR ${APP_BASEDIR}
+COPY --from=builder-goapp /build/server .
+
+# Change Owner
+RUN chown -R ${APPUSER}. ${APP_BASEDIR}
+
+# Set User
+USER ${APPUSER}
+
+# ports
+EXPOSE ${APP_PORT}
+
+# executable
+CMD [ "./server" ]
