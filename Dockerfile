@@ -6,7 +6,7 @@ WORKDIR /build
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o goapp .
 
 # generate clean, final image for end users
-FROM alpine:3.14
+FROM registry.access.redhat.com/ubi8-minimal:8.5-230
 
 ### Node Vars
 ENV APPUSER appuser
