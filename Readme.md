@@ -6,11 +6,10 @@ Several Examples for building docker containers for your Go applications.
 
 ```bash
 $ go build
-$ ./go-docker
-2019/02/03 11:38:11 Starting Server
+$ ./server
 ```
 
 ```bash
-$ curl http://localhost:8080?name=Paulo
-Hello, Paulo
+$ curl http://localhost:8080
+Hellow World !
 ```
