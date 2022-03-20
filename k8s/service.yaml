@@ -9,5 +9,5 @@ spec:
     protocol: TCP
     targetPort: tcp-hellogo
   selector:
-    app: landing-page
+    app: hellogo
   type: ClusterIP
