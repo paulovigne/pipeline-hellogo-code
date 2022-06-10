@@ -1,6 +1,6 @@
 # builder image
 # FROM golang:1.16-alpine3.14 as builder-goapp
-FROM quay.io/bitnami/golang:1.16 as builder-goapp
+FROM bitnami/golang:1.16 as builder-goapp
 RUN mkdir /build
 ADD ./server.go /build/
 WORKDIR /build
