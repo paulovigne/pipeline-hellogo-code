@@ -18,13 +18,6 @@ RUN microdnf install -y shadow-utils \
  && groupadd -g ${UIDGID} ${APPUSER} \
  && adduser ${APPUSER} -u ${UIDGID} -g ${UIDGID}
  
-# RUN if [ `getent passwd | grep ${APPUSER} | wc -l` -eq 0 ] \
-#     ; then \
-#              addgroup -g ${UIDGID} ${APPUSER} \
-#              && adduser -u ${UIDGID} -G ${APPUSER} -s /bin/sh -D ${APPUSER} \
-#     ; fi \
-#     && apk -U upgrade
-
 # Install App
 RUN mkdir ${APP_BASEDIR}
 WORKDIR ${APP_BASEDIR}
