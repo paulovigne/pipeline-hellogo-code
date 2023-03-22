@@ -2,7 +2,7 @@ FROM image-registry.openshift-image-registry.svc:5000/openshift/golang:latest as
 WORKDIR /build
 ADD ./server.go /build/
 RUN mkdir /tmp/cache
-RUN GOCACHE=/tmp/cache CGO_ENABLED=0 GOOS=linux go build -a -o /tmp/server .
+RUN GOCACHE=/tmp/cache CGO_ENABLED=0 GOOS=linux go build -a -o /tmp/server server.go
 
 # generate clean, final image for end users
 FROM registry.access.redhat.com/ubi8-minimal:8.5-230
