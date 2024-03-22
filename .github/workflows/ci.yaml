@@ -32,10 +32,10 @@ jobs:
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|'${{ vars.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yaml
 
       - name: Update ingress file
-        run: sed -i 's|<HOST>|'${{ vars.INGRESS_HOST }}'|' $GITHUB_WORKSPACE/k8s/ingress.yaml
+        run: sed -i 's|<HOST>|'${{ vars.K8S_INGRESS_HOST }}'|' $GITHUB_WORKSPACE/k8s/ingress.yaml
 
       - name: Deploy to Kubernetes
-        run: kubectl --insecure-skip-tls-verify=true --server=${{ vars.KUBERNETES_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} apply -f k8s/
+        run: kubectl --insecure-skip-tls-verify=true --server=${{ vars.K8S_API_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} -n ${{ vars.K8S_NAMESPACE }} apply -f k8s/
 
       - name: Verify deployment
-        run: kubectl --insecure-skip-tls-verify=true --server=${{ vars.KUBERNETES_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} rollout status deployment/${{ vars.APPNAME }}
+        run: kubectl --insecure-skip-tls-verify=true --server=${{ vars.K8S_API_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} -n ${{ vars.K8S_NAMESPACE }} rollout status deployment/${{ vars.APPNAME }}
