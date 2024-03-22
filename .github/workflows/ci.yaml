@@ -14,28 +14,28 @@ jobs:
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/_meta
 
       - name: Build container image
-        run: docker build -t ${{ variables.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t ${{ vars.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Docker Login
         env:
-          DOCKER_USERNAME: ${{ variables.DOCKER_USERNAME }}
+          DOCKER_USERNAME: ${{ vars.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Push image to Docker Hub
-        run: docker push ${{ variables.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7)
+        run: docker push ${{ vars.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7)
 
       - name: Update application name
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<APPNAME>|'${{ variables.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/*.yaml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<APPNAME>|'${{ vars.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/*.yaml
 
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|'${{ variables.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yaml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|'${{ vars.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yaml
 
       - name: Update ingress file
-        run: sed -i 's|<HOST>|'${{ variables.INGRESS_HOST }}'|' $GITHUB_WORKSPACE/k8s/ingress.yaml
+        run: sed -i 's|<HOST>|'${{ vars.INGRESS_HOST }}'|' $GITHUB_WORKSPACE/k8s/ingress.yaml
 
       - name: Deploy to Kubernetes
-        run: kubectl --insecure-skip-tls-verify=true --server=${{ variables.KUBERNETES_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} apply -f k8s/
+        run: kubectl --insecure-skip-tls-verify=true --server=${{ vars.KUBERNETES_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} apply -f k8s/
 
       - name: Verify deployment
-        run: kubectl --insecure-skip-tls-verify=true --server=${{ variables.KUBERNETES_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} rollout status deployment/${{ variables.APPNAME }}
+        run: kubectl --insecure-skip-tls-verify=true --server=${{ vars.KUBERNETES_SERVER }} --token=${{ secrets.KUBERNETES_TOKEN }} rollout status deployment/${{ vars.APPNAME }}
