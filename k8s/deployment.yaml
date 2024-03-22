@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hellogo
+  name: <APPNAME>
   labels:
-     app: hellogo
+     app: <APPNAME>
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: hellogo
+      app: <APPNAME>
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: hellogo
+        app: <APPNAME>
         tier: frontend
     spec:
       securityContext:
@@ -36,7 +36,7 @@ spec:
             cpu: 75m
             memory: 100Mi
         imagePullPolicy: Always
-        name: hellogo
+        name: <APPNAME>
         resources: {}
         securityContext:
           allowPrivilegeEscalation: false
@@ -46,19 +46,19 @@ spec:
           runAsNonRoot: true
         ports:
         - containerPort: 8080
-          name: tcp-hellogo
+          name: tcp-<APPNAME>
           protocol: TCP
         readinessProbe:
           httpGet:
             path: /
-            port: tcp-hellogo
+            port: tcp-<APPNAME>
           initialDelaySeconds: 5
           periodSeconds: 10
           failureThreshold: 3
         livenessProbe:
           httpGet:
             path: /
-            port: tcp-hellogo
+            port: tcp-<APPNAME>
           initialDelaySeconds: 5
           periodSeconds: 10
           failureThreshold: 3
