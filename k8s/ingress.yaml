@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hellogo
+  name: <APPNAME>
 spec:
   rules:
   - host: <HOST>
@@ -9,7 +9,7 @@ spec:
       paths:
       - backend:
           service:
-            name: hellogo
+            name: <APPNAME>
             port:
               number: 8080
         path: /
