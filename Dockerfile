@@ -8,7 +8,7 @@ RUN GOPATH=/build CGO_ENABLED=0 GOOS=linux go build server.go
 
 # generate clean, final image for end users
 # FROM alpine:3.14
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.9-1137
+FROM redhat/ubi8-minimal:8.9
 
 ### Node Vars
 ENV APPUSER appuser
