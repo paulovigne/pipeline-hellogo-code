@@ -25,6 +25,9 @@ jobs:
       - name: Push image to Docker Hub
         run: docker push ${{ secrets.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7)
 
+      - name: Update application name
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<APPNAME>|'${{ secrets.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/*.yaml
+
       - name: Update deployment file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|'${{ secrets.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/k8s/deployment.yaml
 
