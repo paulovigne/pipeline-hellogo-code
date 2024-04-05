@@ -1,5 +1,4 @@
 # builder image
-# FROM golang:1.16-alpine3.14 as builder-goapp
 FROM bitnami/golang:1.16 as builder-goapp
 RUN mkdir /build
 ADD ./server.go /build/
@@ -7,7 +6,6 @@ WORKDIR /build
 RUN GOPATH=/build CGO_ENABLED=0 GOOS=linux go build server.go
 
 # generate clean, final image for end users
-# FROM alpine:3.14
 FROM redhat/ubi8-minimal:8.9
 
 ### Node Vars
@@ -21,13 +19,6 @@ RUN microdnf install -y shadow-utils \
  && groupadd -g ${UIDGID} ${APPUSER} \
  && adduser ${APPUSER} -u ${UIDGID} -g ${UIDGID}
  
-# RUN if [ `getent passwd | grep ${APPUSER} | wc -l` -eq 0 ] \
-#     ; then \
-#              addgroup -g ${UIDGID} ${APPUSER} \
-#              && adduser -u ${UIDGID} -G ${APPUSER} -s /bin/sh -D ${APPUSER} \
-#     ; fi \
-#     && apk -U upgrade
-
 # Install App
 RUN mkdir ${APP_BASEDIR}
 WORKDIR ${APP_BASEDIR}
