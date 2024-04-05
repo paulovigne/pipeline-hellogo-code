@@ -46,7 +46,7 @@ jobs:
             export K8S_NAMESPACE=${{ vars.K8S_NAMESPACE }}
             export APPNAME=${{ vars.APPNAME }}
             export IMAGE=${{ vars.DOCKER_REPO }}:${TAG}
-            export K8S_INGRESS_HOST=${{ vars.K8S_INGRESS_HOST }
+            export K8S_INGRESS_HOST=${{ vars.K8S_INGRESS_HOST }}
 
             yq -i '
               .metadata.name = strenv(APPNAME) |
