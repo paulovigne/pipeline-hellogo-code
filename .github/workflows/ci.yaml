@@ -58,4 +58,4 @@ jobs:
           git config user.password ${{ secrets.INFRA_GITREPO_TOKEN }}
           git add .
           git commit -m "$COMMIT"
-          git push origin master
+          git push origin template:master
