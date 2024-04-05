@@ -9,8 +9,9 @@ jobs:
     steps:
       - name: Checkout code repo
         uses: actions/checkout@v4
-        ref: master
-        path: code
+        with:
+          ref: master
+          path: code
 
       - name: Update SHA
         run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/_meta
