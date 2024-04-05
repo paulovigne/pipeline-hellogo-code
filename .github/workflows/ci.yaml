@@ -34,21 +34,42 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: paulovigne/pipeline-hellogo-infra
-          ref: template
+          ref: master
           token: ${{ secrets.INFRA_GITREPO_TOKEN }}
           path: infra
 
-      - name: Update k8s namespace
-        run: sed -i 's|<NAMESPACE>|'${{ vars.K8S_NAMESPACE }}'|' $GITHUB_WORKSPACE/infra/k8s/*.yaml
+      - name: Update k8s manifests
+        uses: mikefarah/yq@master
+        with:
+          cmd: |
+            TAG=$(echo $GITHUB_SHA | head -c7)
+            export K8S_NAMESPACE=${{ vars.K8S_NAMESPACE }}
+            export APPNAME=${{ vars.APPNAME }}
+            export IMAGE=${{ vars.DOCKER_REPO }}:${TAG}
+            export K8S_INGRESS_HOST=${{ vars.K8S_INGRESS_HOST }
 
-      - name: Update application name
-        run: sed -i 's|<APPNAME>|'${{ vars.APPNAME }}'|' $GITHUB_WORKSPACE/infra/k8s/*.yaml
+            yq -i '
+              .metadata.name = strenv(APPNAME) |
+              .metadata.namespace = strenv(K8S_NAMESPACE) |
+              .metadata.labels.app = strenv(APPNAME) |
+              .spec.selector.matchLabels.app = strenv(APPNAME) |
+              .spec.template.metadata.labels.app = strenv(APPNAME) |
+              .spec.template.spec.containers[0].name = strenv(APPNAME) |
+              .spec.template.spec.containers[0].image = strenv(IMAGE)
+            ' $GITHUB_WORKSPACE/infra/k8s/deployment.yaml
 
-      - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|'${{ vars.DOCKER_REPO }}':'${TAG}'|' $GITHUB_WORKSPACE/infra/k8s/deployment.yaml
+            yq -i '
+              .metadata.name = strenv(APPNAME) |
+              .metadata.namespace = strenv(K8S_NAMESPACE) |
+              .spec.selector.app = strenv(APPNAME)
+            ' $GITHUB_WORKSPACE/infra/k8s/service.yaml
 
-      - name: Update ingress file
-        run: sed -i 's|<HOST>|'${{ vars.K8S_INGRESS_HOST }}'|' $GITHUB_WORKSPACE/infra/k8s/ingress.yaml
+            yq -i '
+              .metadata.name = strenv(APPNAME) |
+              .metadata.namespace = strenv(K8S_NAMESPACE) |
+              .spec.rules[0].host = strenv(K8S_INGRESS_HOST) |
+              .spec.rules[0].http.paths[0].backend.service.name = strenv(APPNAME)
+            ' $GITHUB_WORKSPACE/infra/k8s/ingress.yaml            
 
       - name: checkin infra repo
         run: |
@@ -59,4 +80,4 @@ jobs:
           git config --global user.email "you@example.com"
           git add .
           git commit -m "$COMMIT"
-          git push origin template:master
+          git push
