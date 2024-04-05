@@ -37,6 +37,9 @@ jobs:
           token: ${{ secrets.INFRA_REPO_TOKEN }}
           path: infra
 
+      - name: Update k8s namespace
+        run: sed -i 's|<NAMESPACE>|'${{ vars.K8S_NAMESPACE }}'|' $GITHUB_WORKSPACE/infra/k8s/*.yaml
+
       - name: Update application name
         run: sed -i 's|<APPNAME>|'${{ vars.APPNAME }}'|' $GITHUB_WORKSPACE/infra/k8s/*.yaml
 
@@ -50,8 +53,8 @@ jobs:
         run: |
           COMMIT=$(echo Modified by Code Pipeline - `date`)
           $GITHUB_WORKSPACE/infra
-          git config user.name ${{ vars.INFRA_REPO_USERNAME }}
-          git config user.password ${{ secrets.INFRA_REPO_TOKEN }}
+          git config user.name ${{ vars.INFRA_GITREPO_USERNAME }}
+          git config user.password ${{ secrets.INFRA_GITREPO_TOKEN }}
           git add .
           git commit -m "$COMMIT"
           git push origin master
