@@ -35,7 +35,7 @@ jobs:
         with:
           repository: paulovigne/pipeline-hellogo-infra
           ref: template
-          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          token: ${{ secrets.INFRA_GITREPO_TOKEN }}
           path: infra
 
       - name: Update k8s namespace
