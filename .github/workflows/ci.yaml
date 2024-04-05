@@ -53,7 +53,7 @@ jobs:
       - name: checkin infra repo
         run: |
           COMMIT=$(echo Modified by Code Pipeline - `date`)
-          $GITHUB_WORKSPACE/infra
+          cd $GITHUB_WORKSPACE/infra
           git config user.name ${{ vars.INFRA_GITREPO_USERNAME }}
           git config user.password ${{ secrets.INFRA_GITREPO_TOKEN }}
           git add .
