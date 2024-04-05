@@ -56,6 +56,7 @@ jobs:
           cd $GITHUB_WORKSPACE/infra
           git config --global user.name ${{ vars.INFRA_GITREPO_USERNAME }}
           git config --global user.password ${{ secrets.INFRA_GITREPO_TOKEN }}
+          git config --global user.email "you@example.com"
           git add .
           git commit -m "$COMMIT"
           git push origin template:master
