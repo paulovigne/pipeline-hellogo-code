@@ -4,7 +4,7 @@ on:
       - master
 
 env:
-  BUILD_TAG: ${{ GITHUB_REF_NAME }}-${{ GITHUB_RUN_NUMBER }}
+  BUILD_TAG: ${{ github.ref.name }}-${{ github.run.number }}
 
 jobs:
   build:
