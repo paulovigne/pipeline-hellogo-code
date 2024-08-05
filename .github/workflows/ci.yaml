@@ -4,7 +4,7 @@ on:
       - master
 
 env:
-  BUILD-TAG: $env:GITHUB_REF_NAME-$env:GITHUB_RUN_NUMBER
+  BUILD_TAG: $env:GITHUB_REF_NAME-$env:GITHUB_RUN_NUMBER
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
       - name: Build container image
         run: |
           cd $GITHUB_WORKSPACE/code
-          docker build -t ${{ vars.DOCKER_REPO }}:$BUILD-TAG .
+          docker build -t ${{ vars.DOCKER_REPO }}:$BUILD_TAG .
 
       - name: Docker Login
         env:
@@ -32,7 +32,7 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Push image to Docker Hub
-        run: docker push ${{ vars.DOCKER_REPO }}:$BUILD-TAG
+        run: docker push ${{ vars.DOCKER_REPO }}:$BUILD_TAG
 
       - name: Checkout infra repo
         uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
           cmd: |
             export K8S_NAMESPACE=${{ vars.K8S_NAMESPACE }}
             export APPNAME=${{ vars.APPNAME }}
-            export IMAGE=${{ vars.DOCKER_REPO }}:$BUILD-TAG
+            export IMAGE=${{ vars.DOCKER_REPO }}:$BUILD_TAG
             export K8S_INGRESS_HOST=${{ vars.K8S_INGRESS_HOST }}
 
             yq -i '
