@@ -2,6 +2,10 @@ on:
   push:
     branches:
       - master
+
+env:
+  BUILD-TAG: $env:GITHUB_REF_NAME-$env:GITHUB_RUN_NUMBER
+
 jobs:
   build:
     name: Build, push, and deploy
@@ -19,7 +23,7 @@ jobs:
       - name: Build container image
         run: |
           cd $GITHUB_WORKSPACE/code
-          docker build -t ${{ vars.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7) .
+          docker build -t ${{ vars.DOCKER_REPO }}:$BUILD-TAG .
 
       - name: Docker Login
         env:
@@ -28,7 +32,7 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Push image to Docker Hub
-        run: docker push ${{ vars.DOCKER_REPO }}:$(echo $GITHUB_SHA | head -c7)
+        run: docker push ${{ vars.DOCKER_REPO }}:$BUILD-TAG
 
       - name: Checkout infra repo
         uses: actions/checkout@v4
@@ -42,10 +46,9 @@ jobs:
         uses: mikefarah/yq@master
         with:
           cmd: |
-            TAG=$(echo $GITHUB_SHA | head -c7)
             export K8S_NAMESPACE=${{ vars.K8S_NAMESPACE }}
             export APPNAME=${{ vars.APPNAME }}
-            export IMAGE=${{ vars.DOCKER_REPO }}:${TAG}
+            export IMAGE=${{ vars.DOCKER_REPO }}:$BUILD-TAG
             export K8S_INGRESS_HOST=${{ vars.K8S_INGRESS_HOST }}
 
             yq -i '
