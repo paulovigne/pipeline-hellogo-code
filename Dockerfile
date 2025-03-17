@@ -1,12 +1,12 @@
 # builder image
-FROM bitnami/golang:1.16 as builder-goapp
+FROM docker.io/bitnami/golang:1.16 as builder-goapp
 RUN mkdir /build
 ADD ./server.go /build/
 WORKDIR /build
 RUN GOPATH=/build CGO_ENABLED=0 GOOS=linux go build server.go
 
 # generate clean, final image for end users
-FROM redhat/ubi8-minimal:8.9
+FROM docker.io/redhat/ubi8-minimal:8.9
 
 ### Node Vars
 ENV APPUSER appuser
